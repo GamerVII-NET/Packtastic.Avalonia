@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\Packtastic.Avalonia.Core\Packtastic.Avalonia.Core.csproj" />
+      <ProjectReference Include="..\..\src\Packtastic.Avalonia.Core\Packtastic.Avalonia.Core.csproj" />
     </ItemGroup>
 
 </Project>

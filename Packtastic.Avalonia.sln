@@ -6,9 +6,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AD748F43-DAC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2A58797C-4F07-43C1-B1A0-D26A674D9DA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packtastic.Tests", "Packtastic.Tests\Packtastic.Tests.csproj", "{6F2CA512-3D79-4E92-9976-158358A09F61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packtastic.Tests", "tests\Packtastic.Tests\Packtastic.Tests.csproj", "{6F2CA512-3D79-4E92-9976-158358A09F61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packtastic.Avalonia.Interfaces", "Packtastic.Avalonia.Interfaces\Packtastic.Avalonia.Interfaces.csproj", "{E9A336D1-5C08-47ED-94F3-5ED0895E51C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packtastic.Avalonia.Interfaces", "src\Packtastic.Avalonia.Interfaces\Packtastic.Avalonia.Interfaces.csproj", "{E9A336D1-5C08-47ED-94F3-5ED0895E51C9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{92A33181-95E7-4119-AD94-1542FF03A91B}"
 	ProjectSection(SolutionItems) = preProject
