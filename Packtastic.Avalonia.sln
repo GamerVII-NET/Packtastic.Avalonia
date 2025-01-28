@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packtastic.Avalonia.Core", "src\Packtastic.Avalonia.Core\Packtastic.Avalonia.Core.csproj", "{9A216EA5-C392-4F13-A3E1-FD175468E589}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AD748F43-DAC9-42F2-97DE-195E97B90F89}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2A58797C-4F07-43C1-B1A0-D26A674D9DA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packtastic.Tests", "Packtastic.Tests\Packtastic.Tests.csproj", "{6F2CA512-3D79-4E92-9976-158358A09F61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packtastic.Avalonia.Interfaces", "Packtastic.Avalonia.Interfaces\Packtastic.Avalonia.Interfaces.csproj", "{E9A336D1-5C08-47ED-94F3-5ED0895E51C9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{92A33181-95E7-4119-AD94-1542FF03A91B}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A216EA5-C392-4F13-A3E1-FD175468E589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A216EA5-C392-4F13-A3E1-FD175468E589}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A216EA5-C392-4F13-A3E1-FD175468E589}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A216EA5-C392-4F13-A3E1-FD175468E589}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F2CA512-3D79-4E92-9976-158358A09F61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F2CA512-3D79-4E92-9976-158358A09F61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F2CA512-3D79-4E92-9976-158358A09F61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F2CA512-3D79-4E92-9976-158358A09F61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9A336D1-5C08-47ED-94F3-5ED0895E51C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9A336D1-5C08-47ED-94F3-5ED0895E51C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9A336D1-5C08-47ED-94F3-5ED0895E51C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9A336D1-5C08-47ED-94F3-5ED0895E51C9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9A216EA5-C392-4F13-A3E1-FD175468E589} = {AD748F43-DAC9-42F2-97DE-195E97B90F89}
+		{6F2CA512-3D79-4E92-9976-158358A09F61} = {2A58797C-4F07-43C1-B1A0-D26A674D9DA4}
+		{E9A336D1-5C08-47ED-94F3-5ED0895E51C9} = {AD748F43-DAC9-42F2-97DE-195E97B90F89}
+	EndGlobalSection
+EndGlobal
