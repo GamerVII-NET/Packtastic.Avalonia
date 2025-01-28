@@ -12,6 +12,13 @@ internal class ProjectsProcedures(IPackStorage storage) : IProjectProcedures
         return storage.SaveConfigurationAsync(token);
     }
 
+    public Task<IReadOnlyCollection<IBuildProject>> GetBuildProjectsAsync(CancellationToken token = default)
+    {
+        var projects = storage.Configuration.BuildProjects.Values.ToArray();
+        
+        return Task.FromResult<IReadOnlyCollection<IBuildProject>>(projects);
+    }
+
     public async Task<IReadOnlyCollection<ISolution>> GetSolutionsAsync()
     {
         var tasks = storage.Configuration.ProjectsDirectories
@@ -24,5 +31,16 @@ internal class ProjectsProcedures(IPackStorage storage) : IProjectProcedures
         var projects = await Task.WhenAll(tasks);
 
         return projects.SelectMany(project => project).ToArray();
+    }
+
+    public async Task<IBuildProject> CreateBuildProjectAsync(IProject project, CancellationToken token = default)
+    {
+        var buildProject = new BuildProject(project);
+
+        storage.Configuration.AddBuildProject(buildProject);
+        
+        await storage.SaveConfigurationAsync(token);
+        
+        return buildProject;
     }
 }

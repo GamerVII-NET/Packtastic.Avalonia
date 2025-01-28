@@ -1,3 +1,4 @@
+using Microsoft.Build.Locator;
 using Packtastic.Avalonia;
 
 namespace Packtastic.Tests;
@@ -6,28 +7,29 @@ public class Tests
 {
     private PackManager _packtasktic;
     private PackJsonConfig _jsonConfig;
-
-    [SetUp]
-    public void Setup()
+    
+    [OneTimeSetUp]
+    public void OneTimeSetUp()
     {
         _jsonConfig = new PackJsonConfig(Environment.CurrentDirectory);
         _packtasktic = new PackManager(_jsonConfig);
+        _packtasktic.Register();
     }
 
     [Test]
-    public void AddProjectsDirectory()
+    public async Task AddProjectsDirectory()
     {
-        var directory = "D:\\Projects\\RiderProjects";
-        var packageDirectory = _packtasktic.Projects.AddProjectDirectoryAsync(directory);
+        var directory = "D:\\Projects\\RiderProjects"; 
+        await _packtasktic.Projects.AddProjectDirectoryAsync(directory);
         
         Assert.Pass();
     }
 
     [Test]
-    public void CanAddProjectsDirectory()
+    public async Task CanAddProjectsDirectory()
     {
         var directory = "D:\\Projects\\RiderProjects";
-        var packageDirectory = _packtasktic.Projects.AddProjectDirectoryAsync(directory);
+        await _packtasktic.Projects.AddProjectDirectoryAsync(directory);
         
         Assert.Pass();
     }
@@ -37,7 +39,7 @@ public class Tests
     {
         var solutions = await _packtasktic.Projects.GetSolutionsAsync();
         
-        Assert.Pass();
+        Assert.That(solutions, Is.Not.Empty);
     }
 
     [Test]
@@ -45,6 +47,57 @@ public class Tests
     {
         var solutions = await _packtasktic.Projects.GetSolutionsAsync();
         
-        Assert.Pass();
+        var solution = solutions.Single(c => c.Name == "Gml.Launcher");
+
+        var projects = await solution.GetProjectsAsync();
+        
+        Assert.That(projects, Is.Not.Empty);
+    }
+
+    [Test]
+    public async Task GetAvaloniaProjects()
+    {
+        var solutions = await _packtasktic.Projects.GetSolutionsAsync();
+        
+        var solution = solutions.Single(c => c.Name == "Gml.Launcher");
+
+        var projects = await solution.GetProjectsAsync();
+
+        var avaloniaProject = projects.FirstOrDefault(c => c.AnyPackage("Avalonia.Desktop"));
+        
+        Assert.That(avaloniaProject, Is.Not.Null);
+    }
+
+    [Test]
+    public async Task CreatePacktasticProject()
+    {
+        var solutions = await _packtasktic.Projects.GetSolutionsAsync();
+        
+        var solution = solutions.Single(c => c.Name == "Gml.Launcher");
+
+        var projects = await solution.GetProjectsAsync();
+
+        var avaloniaProject = projects.Single(c => c.AnyPackage("Avalonia.Desktop"));
+
+        var buildProject = await _packtasktic.Projects.CreateBuildProjectAsync(avaloniaProject);
+        
+        Assert.That(avaloniaProject, Is.Not.Null);
+    }
+
+    [Test]
+    public async Task GetPacktasticProjects()
+    {
+        var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
+        
+    }
+
+    [Test]
+    public async Task BuildPacktasticProject()
+    {
+        var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
+        var project = buildProjects.Single(c => c.Name == "Gml.Launcher");
+
+        await project.BuildAllPlatformsAsync();
+
     }
 }

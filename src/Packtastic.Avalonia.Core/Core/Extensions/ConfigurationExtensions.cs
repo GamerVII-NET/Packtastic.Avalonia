@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Packtastic.Avalonia.Core.Helpers;
+using Packtastic.Avalonia.Models;
 
 namespace Packtastic.Avalonia.Core.Extensions;
 
@@ -25,7 +26,11 @@ public static class ConfigurationExtensions
         await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
         var restoredConfig = await JsonSerializer.DeserializeAsync<PackConfiguration>(fileStream, new JsonSerializerOptions
         {
-            PropertyNameCaseInsensitive = true
+            PropertyNameCaseInsensitive = true,
+            Converters =
+            {
+                new InterfaceConverter<IBuildProject, BuildProject>()
+            }
         }, token);
         
         if (restoredConfig == null)
