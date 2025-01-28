@@ -35,7 +35,7 @@ public class Tests
     [Test]
     public async Task GetSolutions()
     {
-        var packageDirectory = await _packtasktic.Projects.GetSolutionsAsync();
+        var solutions = await _packtasktic.Projects.GetSolutionsAsync();
         
         Assert.Pass();
     }
@@ -43,7 +43,7 @@ public class Tests
     [Test]
     public async Task GetProjects()
     {
-        var packageDirectory = await _packtasktic.Projects.GetSolutionsAsync();
+        var solutions = await _packtasktic.Projects.GetSolutionsAsync();
         
         Assert.Pass();
     }
