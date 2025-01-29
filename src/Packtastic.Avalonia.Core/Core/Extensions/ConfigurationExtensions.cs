@@ -23,6 +23,11 @@ public static class ConfigurationExtensions
         string filePath,
         CancellationToken token = default)
     {
+        if (!File.Exists(filePath))
+        {
+            return new PackConfiguration();
+        }
+        
         await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
         var restoredConfig = await JsonSerializer.DeserializeAsync<PackConfiguration>(fileStream, new JsonSerializerOptions
         {

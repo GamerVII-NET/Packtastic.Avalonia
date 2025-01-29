@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Microsoft.Build.Locator;
 using Packtastic.Avalonia;
 
@@ -7,20 +8,30 @@ public class Tests
 {
     private PackManager _packtasktic;
     private PackJsonConfig _jsonConfig;
-    
+    private string _directory;
+
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
         _jsonConfig = new PackJsonConfig(Environment.CurrentDirectory);
         _packtasktic = new PackManager(_jsonConfig);
         _packtasktic.Register();
+        
+        if (OperatingSystem.IsWindows())
+        {
+            _directory = "D:\\Projects\\RiderProjects";
+        }
+        
+        if (OperatingSystem.IsLinux())
+        {
+            _directory = "/home/gamervii/RiderProjects";
+        }
     }
 
     [Test]
     public async Task AddProjectsDirectory()
     {
-        var directory = "D:\\Projects\\RiderProjects"; 
-        await _packtasktic.Projects.AddProjectDirectoryAsync(directory);
+        await _packtasktic.Projects.AddProjectDirectoryAsync(_directory);
         
         Assert.Pass();
     }
@@ -28,8 +39,7 @@ public class Tests
     [Test]
     public async Task CanAddProjectsDirectory()
     {
-        var directory = "D:\\Projects\\RiderProjects";
-        await _packtasktic.Projects.AddProjectDirectoryAsync(directory);
+        await _packtasktic.Projects.AddProjectDirectoryAsync(_directory);
         
         Assert.Pass();
     }
@@ -92,12 +102,34 @@ public class Tests
     }
 
     [Test]
-    public async Task BuildPacktasticProject()
+    public async Task BuildPacktasticProjects()
     {
         var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
         var project = buildProjects.Single(c => c.Name == "Gml.Launcher");
 
         await project.BuildAllPlatformsAsync();
+    }
 
+    [Test]
+    public async Task BuildPacktasticProject()
+    {
+        var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
+        var project = buildProjects.Single(c => c.Name == "Gml.Launcher");
+
+        await project.BuildPlatformsAsync(RuntimeInformation.RuntimeIdentifier);
+    }
+
+    [Test]
+    public async Task PackPacktasticProject()
+    {
+        var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
+        var project = buildProjects.Single(c => c.Name == "Gml.Launcher");
+
+        project.Version = "1.0.0.0";
+        project.HomePage = "https://github.com/Gml-Launcher/Gml.Launcher";
+        project.Description = "Игровой проект Minecraft";
+        project.Email = "orders@recloud.tech";
+        
+        await project.PackPlatformsAsync(PackageType.Deb, RuntimeInformation.RuntimeIdentifier);
     }
 }
