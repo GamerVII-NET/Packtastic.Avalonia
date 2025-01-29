@@ -9,7 +9,7 @@ for different operating systems.
 | Package Type | Description                                               | Supported OS               | Supported |
 |--------------|-----------------------------------------------------------|----------------------------|-----------|
 | **dmg**      | Packaging applications into disk image formats.           | macOS                      | ✘         |
-| **deb**      | Format for creating Debian packages.                      | Linux (Debian-based)       | ✘         |
+| **deb**      | Format for creating Debian packages.                      | Linux (Debian-based)       | ✔         |
 | **msi**      | Application installation using Windows Installer.         | Windows                    | ✘         |
 | **exe**      | Executable files for application installation.            | Windows                    | ✔         |
 | **binary**   | Universal binary files.                                   | Linux, Windows, macOS      | ✔         |
