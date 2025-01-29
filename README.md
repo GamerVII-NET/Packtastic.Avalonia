@@ -12,7 +12,7 @@ for different operating systems.
 | **deb**      | Format for creating Debian packages.                      | Linux (Debian-based)       | ✘         |
 | **msi**      | Application installation using Windows Installer.         | Windows                    | ✘         |
 | **exe**      | Executable files for application installation.            | Windows                    | ✔         |
-| **binary**   | Universal binary files.                                   | Linux, Windows, macOS      | ✘         |
+| **binary**   | Universal binary files.                                   | Linux, Windows, macOS      | ✔         |
 | **zip**      | Compressed archive for simplified application packaging.  | Windows, macOS, Linux      | ✘         |
 | **tar.gz**   | Compressed archive for distribution in Unix-like systems. | Linux, macOS               | ✘         |
 | **rpm**      | Red Hat package format for RPM-based Linux distributions. | Linux (RHEL, Fedora, etc.) | ✘         |
