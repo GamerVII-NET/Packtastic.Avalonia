@@ -9,5 +9,5 @@ public interface IBuildProject : IProject
     string Email { get; set; }
     Task BuildAllPlatformsAsync();
     Task BuildPlatformsAsync(string platform);
-    Task PackPlatformsAsync(PackageType packageType, string platform);
+    Task PackPlatformsAsync(PackageType packageType, string platform, IPackOptions packOptions);
 }

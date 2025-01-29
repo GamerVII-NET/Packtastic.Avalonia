@@ -9,4 +9,5 @@ public interface IPackOptions
     string Description { get; set; }
     string Version { get; set; }
     string HomePage { get; set; }
+    void Validate();
 }

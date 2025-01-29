@@ -3,22 +3,10 @@ using System.Text;
 
 namespace Packtastic.Avalonia.Core.Factories;
 
-public class PackOptions : IPackOptions
-{
-    public required string Name { get; set; }
-    public required string SlugName { get; set; }
-    public required string BinaryDirectory { get; set; }
-    public required string Email { get; set; }
-    public required string Description { get; set; }
-    public required string Version { get; set; }
-    public required string HomePage { get; set; }
-}
-
 public class DebPacker(string platform) : IOperationSystemPacker
 {
     public void Pack(IPackOptions packOptions)
     {
-        // ToDo: Remove all specialChars
         var directory = Path.Combine(packOptions.BinaryDirectory, "bin", "Packtastic", platform);
 
         if (!Directory.Exists(directory))

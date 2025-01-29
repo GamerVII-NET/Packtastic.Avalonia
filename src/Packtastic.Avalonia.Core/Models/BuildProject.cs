@@ -51,35 +51,17 @@ public class BuildProject : IBuildProject
         throw new NotSupportedException();
     }
 
-    public Task PackPlatformsAsync(PackageType packageType, string platform)
+    public Task PackPlatformsAsync(PackageType packageType, string platform, IPackOptions packOptions)
     {
         if (!_packerFactory.OperationSystemPackers.TryGetValue(packageType, out var packers))
             throw new NotSupportedException();
 
         if (!packers.TryGetValue(platform, out var packer))
             throw new NotSupportedException();
-        
-        if (string.IsNullOrEmpty(Name))
-            throw new ArgumentException(nameof(Name));
-        if (string.IsNullOrEmpty(Version))
-            throw new ArgumentException(nameof(Version));
-        if (string.IsNullOrEmpty(HomePage))
-            throw new ArgumentException(nameof(HomePage));
-        if (string.IsNullOrEmpty(Description))
-            throw new ArgumentException(nameof(Description));
-        if (string.IsNullOrEmpty(Email))
-            throw new ArgumentException(nameof(Email));
 
-        packer.Pack(new PackOptions
-        {
-            Name = Name,
-            SlugName = Name.ToSlug(),
-            BinaryDirectory = Path.GetDirectoryName(AbsolutePath)!,
-            Email = Email,
-            Description = Description,
-            Version = Version,
-            HomePage = HomePage
-        });
+        packOptions.Validate();
+
+        packer.Pack(packOptions);
 
         return Task.CompletedTask;
     }
