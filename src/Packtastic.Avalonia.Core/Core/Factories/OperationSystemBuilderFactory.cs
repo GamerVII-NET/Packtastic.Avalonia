@@ -14,5 +14,8 @@ public class OperationSystemBuilderFactory
             { "linux-musl-x64", new LinuxSystemBuilder("musl-x64") },
             { "linux-arm", new LinuxSystemBuilder("arm") },
             { "linux-arm64", new LinuxSystemBuilder("arm64") },
+            
+            { "osx-arm64", new OsXSystemBuilder("arm64") },
+            { "osx-x64", new OsXSystemBuilder("x64") },
         };
 }
