@@ -30,22 +30,19 @@ public class BuildProject : IBuildProject
 
     public bool AnyPackage(string packageName) => Project.AnyPackage(packageName);
 
-    public Task BuildAllPlatformsAsync()
+    public Task<bool> BuildAllPlatformsAsync()
     {
-        foreach (var platform in _builderFactory.OperationSystemBuilders.Keys)
-        {
-            _builderFactory.OperationSystemBuilders[platform].BuildProject(AbsolutePath);
-        }
+        var allSucceeded = _builderFactory.OperationSystemBuilders.Keys
+            .All(platform => _builderFactory.OperationSystemBuilders[platform].BuildProject(AbsolutePath));
 
-        return Task.CompletedTask;
+        return Task.FromResult(allSucceeded);
     }
 
-    public Task BuildPlatformsAsync(string platform)
+    public Task<bool> BuildPlatformsAsync(string platform)
     {
         if (_builderFactory.OperationSystemBuilders.TryGetValue(platform, out var builder))
         {
-            builder.BuildProject(AbsolutePath);
-            return Task.CompletedTask;
+            return Task.FromResult(builder.BuildProject(AbsolutePath));
         }
 
         throw new NotSupportedException();

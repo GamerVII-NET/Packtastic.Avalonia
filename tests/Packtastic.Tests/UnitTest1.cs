@@ -104,12 +104,12 @@ public class Tests
     }
 
     [Test]
-    public async Task BuildPacktasticProjects()
+    public async Task BuildAllPlatformsPacktasticProject()
     {
         var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
         var project = buildProjects.Single(c => c.Name == "Gml.Launcher");
-
-        await project.BuildAllPlatformsAsync();
+        
+        Assert.That(await project.BuildAllPlatformsAsync(), Is.True);
     }
 
     [Test]
@@ -117,8 +117,17 @@ public class Tests
     {
         var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
         var project = buildProjects.Single(c => c.Name == "Gml.Launcher");
+        
+        Assert.That(await project.BuildPlatformsAsync(RuntimeInformation.RuntimeIdentifier), Is.True);
+    }
 
-        await project.BuildPlatformsAsync(RuntimeInformation.RuntimeIdentifier);
+    [Test]
+    public async Task BuildOtherPlatformPacktasticProject()
+    {
+        var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
+        var project = buildProjects.Single(c => c.Name == "Gml.Launcher");
+
+        Assert.That(await project.BuildPlatformsAsync("linux-arm64"), Is.True);
     }
 
     [Test]
@@ -139,6 +148,30 @@ public class Tests
         };
         
         await project.PackPlatformsAsync(PackageType.Deb, RuntimeInformation.RuntimeIdentifier, packOptions);
+    }
+
+    [Test]
+    public async Task BuildAllLinuxPlatformsDebPacktasticProject()
+    {
+        string[] platforms = { "linux-x64", "linux-musl-x64", "linux-arm", "linux-arm64" };
+        var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
+        var project = buildProjects.Single(c => c.Name == "Gml.Launcher");
+
+        foreach (var platform in platforms)
+        {
+            var packOptions = new PackOptions
+            {
+                Name = project.Name,
+                SlugName = project.Name.ToSlug(),
+                BinaryDirectory = Path.GetDirectoryName(project.AbsolutePath)!,
+                Email = "orders@recloud.tech",
+                Description = "Игровой проект Minecraft",
+                Version = "1.0.0.0",
+                HomePage = "https://github.com/Gml-Launcher/Gml.Launcher"
+            };
+            await project.PackPlatformsAsync(PackageType.Deb, platform, packOptions);
+        }
+        
     }
 
     [Test]

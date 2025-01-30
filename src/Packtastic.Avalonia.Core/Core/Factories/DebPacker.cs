@@ -36,7 +36,6 @@ public class DebPacker(string platform) : IOperationSystemPacker
         Directory.CreateDirectory(iconsFolder);
         Directory.CreateDirectory(pixmapsFolder);
 
-        // Создаём control файл
         string controlFile = Path.Combine(debianFolder, "control");
         File.WriteAllText(controlFile, GenerateControlFile(packOptions), new UTF8Encoding(false));
 
@@ -45,16 +44,13 @@ public class DebPacker(string platform) : IOperationSystemPacker
             File.Copy(file, Path.Combine(usrLibFolder, Path.GetFileName(file)), true);
         }
 
-        // Создаём стартовый скрипт в /usr/bin/
         string starterScript = Path.Combine(usrBinFolder, packOptions.SlugName);
         File.WriteAllText(starterScript, GenerateStarterScript(packOptions.SlugName, packOptions.Name), Encoding.UTF8);
         MakeExecutable(starterScript);
 
-        // Создаём .desktop файл
         string desktopFilePath = Path.Combine(applicationsFolder, $"{packOptions.SlugName}.desktop");
         File.WriteAllText(desktopFilePath, GenerateDesktopFile(packOptions.SlugName), Encoding.UTF8);
 
-        // Копируем иконку приложения
         var iconPath = Path.Combine(directory, "icon.svg");
         if (File.Exists(iconPath))
         {
@@ -62,16 +58,13 @@ public class DebPacker(string platform) : IOperationSystemPacker
             File.Copy(iconPath, Path.Combine(pixmapsFolder, $"{packOptions.SlugName}.png"), true);
         }
 
-        // Создаём .deb пакет
-        string debFilePath = Path.Combine(directory, $"{packOptions.SlugName}.deb");
+        string debFilePath = Path.Combine(directory, $"{packOptions.SlugName}-{platform}.deb");
         
         var publish = RunCommand($"dpkg-deb --root-owner-group --build {stagingFolder} {debFilePath}");
         if (!publish.IsSuccess)
         {
             throw new Exception(publish.Content);
         }
-
-        Console.WriteLine($"Deb package created: {debFilePath}");
 
         Console.WriteLine($"Deb package created: {debFilePath}");
     }
@@ -85,7 +78,7 @@ public class DebPacker(string platform) : IOperationSystemPacker
                  Version: {packOptions.Version}
                  Section: utils
                  Priority: optional
-                 Architecture: amd64
+                 Architecture: {packOptions.Architecture}
                  Installed-Size: 50000
                  Depends: libx11-6, libice6, libsm6, libfontconfig1, ca-certificates, tzdata, libc6, libgcc1 | libgcc-s1, libstdc++6, zlib1g
                  Homepage: {packOptions.HomePage}

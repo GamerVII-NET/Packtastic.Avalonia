@@ -11,6 +11,8 @@ public class PathOptions(string projectName, string path) : IPackOptions
     public string Description { get; set; } = string.Empty;
     public string Version { get; set; } = string.Empty;
     public string HomePage { get; set; } = string.Empty;
+    public string Architecture { get; set; } = string.Empty;
+
     public void Validate()
     {
     }

@@ -7,7 +7,7 @@ public interface IBuildProject : IProject
     string HomePage { get; set; }
     string Description { get; set; }
     string Email { get; set; }
-    Task BuildAllPlatformsAsync();
-    Task BuildPlatformsAsync(string platform);
+    Task<bool> BuildAllPlatformsAsync();
+    Task<bool> BuildPlatformsAsync(string platform);
     Task PackPlatformsAsync(PackageType packageType, string platform, IPackOptions packOptions);
 }

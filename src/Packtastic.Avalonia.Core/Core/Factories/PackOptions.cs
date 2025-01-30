@@ -9,6 +9,8 @@ public class PackOptions : IPackOptions
     public required string Description { get; set; }
     public required string Version { get; set; }
     public required string HomePage { get; set; }
+    public string Architecture { get; set; } = "all";
+
     public void Validate()
     {
         if (string.IsNullOrEmpty(Name))
@@ -21,5 +23,7 @@ public class PackOptions : IPackOptions
             throw new ArgumentException(nameof(Description));
         if (string.IsNullOrEmpty(Email))
             throw new ArgumentException(nameof(Email));
+        if (string.IsNullOrEmpty(Architecture))
+            throw new ArgumentException(nameof(Architecture));
     }
 }
