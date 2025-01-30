@@ -151,7 +151,7 @@ public class Tests
     }
 
     [Test]
-    public async Task BuildAllLinuxPlatformsDebPacktasticProject()
+    public async Task PackAllLinuxPlatformsDebPacktasticProject()
     {
         string[] platforms = { "linux-x64", "linux-musl-x64", "linux-arm", "linux-arm64" };
         var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
