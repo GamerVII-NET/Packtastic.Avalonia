@@ -1,0 +1,24 @@
+<?define name = "{{name}}"?>
+<?define version = "{{version}}"?>
+<?define publisher = "{{publisher}}"?>
+<?define guid = "{{guid}}"?>
+
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Package Name="$(var.name)" Manufacturer="$(var.publisher)" Version="$(var.version)"
+             UpgradeCode="$(var.guid)" Scope="perMachine">
+
+        <Media Id="1" Cabinet="setup.cab" EmbedCab="yes" />
+
+        <Feature Id="InstallFeature" Title="Install Feature">
+            <ComponentRef Id="File" />
+        </Feature>
+
+        <StandardDirectory Id="CommonAppDataFolder">
+            <Directory Id="INSTALLLOCATION" Name="_packages\$(var.guid)">
+                <Component Id="File" DiskId="1" >
+                    {{files}}
+                </Component>
+            </Directory>
+        </StandardDirectory>
+    </Package>
+</Wix>

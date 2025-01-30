@@ -18,12 +18,12 @@ public class Tests
         _jsonConfig = new PackJsonConfig(Environment.CurrentDirectory);
         _packtasktic = new PackManager(_jsonConfig);
         _packtasktic.Register();
-        
+
         if (OperatingSystem.IsWindows())
         {
             _directory = "D:\\Projects\\RiderProjects";
         }
-        
+
         if (OperatingSystem.IsLinux())
         {
             _directory = "/home/gamervii/RiderProjects";
@@ -34,7 +34,7 @@ public class Tests
     public async Task AddProjectsDirectory()
     {
         await _packtasktic.Projects.AddProjectDirectoryAsync(_directory);
-        
+
         Assert.Pass();
     }
 
@@ -42,7 +42,7 @@ public class Tests
     public async Task CanAddProjectsDirectory()
     {
         await _packtasktic.Projects.AddProjectDirectoryAsync(_directory);
-        
+
         Assert.Pass();
     }
 
@@ -50,7 +50,7 @@ public class Tests
     public async Task GetSolutions()
     {
         var solutions = await _packtasktic.Projects.GetSolutionsAsync();
-        
+
         Assert.That(solutions, Is.Not.Empty);
     }
 
@@ -58,11 +58,11 @@ public class Tests
     public async Task GetProjects()
     {
         var solutions = await _packtasktic.Projects.GetSolutionsAsync();
-        
+
         var solution = solutions.Single(c => c.Name == "Gml.Launcher");
 
         var projects = await solution.GetProjectsAsync();
-        
+
         Assert.That(projects, Is.Not.Empty);
     }
 
@@ -70,13 +70,13 @@ public class Tests
     public async Task GetAvaloniaProjects()
     {
         var solutions = await _packtasktic.Projects.GetSolutionsAsync();
-        
+
         var solution = solutions.Single(c => c.Name == "Gml.Launcher");
 
         var projects = await solution.GetProjectsAsync();
 
         var avaloniaProject = projects.FirstOrDefault(c => c.AnyPackage("Avalonia.Desktop"));
-        
+
         Assert.That(avaloniaProject, Is.Not.Null);
     }
 
@@ -84,7 +84,7 @@ public class Tests
     public async Task CreatePacktasticProject()
     {
         var solutions = await _packtasktic.Projects.GetSolutionsAsync();
-        
+
         var solution = solutions.Single(c => c.Name == "Gml.Launcher");
 
         var projects = await solution.GetProjectsAsync();
@@ -92,7 +92,7 @@ public class Tests
         var avaloniaProject = projects.Single(c => c.AnyPackage("Avalonia.Desktop"));
 
         var buildProject = await _packtasktic.Projects.CreateBuildProjectAsync(avaloniaProject);
-        
+
         Assert.That(avaloniaProject, Is.Not.Null);
     }
 
@@ -100,7 +100,6 @@ public class Tests
     public async Task GetPacktasticProjects()
     {
         var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
-        
     }
 
     [Test]
@@ -108,7 +107,7 @@ public class Tests
     {
         var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
         var project = buildProjects.Single(c => c.Name == "Gml.Launcher");
-        
+
         Assert.That(await project.BuildAllPlatformsAsync(), Is.True);
     }
 
@@ -117,7 +116,7 @@ public class Tests
     {
         var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
         var project = buildProjects.Single(c => c.Name == "Gml.Launcher");
-        
+
         Assert.That(await project.BuildPlatformsAsync(RuntimeInformation.RuntimeIdentifier), Is.True);
     }
 
@@ -141,12 +140,13 @@ public class Tests
             Name = project.Name,
             SlugName = project.Name.ToSlug(),
             BinaryDirectory = Path.GetDirectoryName(project.AbsolutePath)!,
+            CompanyName = "Recloud",
             Email = "orders@recloud.tech",
             Description = "Игровой проект Minecraft",
             Version = "1.0.0.0",
             HomePage = "https://github.com/Gml-Launcher/Gml.Launcher"
         };
-        
+
         await project.PackPlatformsAsync(PackageType.Deb, RuntimeInformation.RuntimeIdentifier, packOptions);
     }
 
@@ -164,6 +164,7 @@ public class Tests
                 Name = project.Name,
                 SlugName = project.Name.ToSlug(),
                 BinaryDirectory = Path.GetDirectoryName(project.AbsolutePath)!,
+                CompanyName = "Recloud",
                 Email = "orders@recloud.tech",
                 Description = "Игровой проект Minecraft",
                 Version = "1.0.0.0",
@@ -171,7 +172,6 @@ public class Tests
             };
             await project.PackPlatformsAsync(PackageType.Deb, platform, packOptions);
         }
-        
     }
 
     [Test]
@@ -179,7 +179,39 @@ public class Tests
     {
         var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
         var project = buildProjects.Single(c => c.Name == "Gml.Launcher");
-        
-        await project.PackPlatformsAsync(PackageType.Zip, RuntimeInformation.RuntimeIdentifier, new PathOptions(project.Name, Path.GetDirectoryName(project.AbsolutePath)!));
+
+        await project.PackPlatformsAsync(PackageType.Zip, RuntimeInformation.RuntimeIdentifier,
+            new PathOptions(project.Name, Path.GetDirectoryName(project.AbsolutePath)!));
+    }
+
+    [Test]
+    public async Task PackAllWindowsPlatformsMsiPacktasticProject()
+    {
+        string[] platforms =
+        [
+            "win-x64",
+            "win-arm64",
+            "win-x86",
+            "win-arm"
+        ];
+
+        var buildProjects = await _packtasktic.Projects.GetBuildProjectsAsync();
+        var project = buildProjects.Single(c => c.Name == "Gml.Launcher");
+
+        foreach (var platform in platforms)
+        {
+            var packOptions = new PackOptions
+            {
+                Name = project.Name,
+                SlugName = project.Name.ToSlug(),
+                BinaryDirectory = Path.GetDirectoryName(project.AbsolutePath)!,
+                Email = "orders@recloud.tech",
+                CompanyName = "Recloud",
+                Description = "Игровой проект Minecraft",
+                Version = "1.0.0.0",
+                HomePage = "https://github.com/Gml-Launcher/Gml.Launcher",
+            };
+            await project.PackPlatformsAsync(PackageType.Msi, platform, packOptions);
+        }
     }
 }

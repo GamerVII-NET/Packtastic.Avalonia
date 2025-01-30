@@ -10,5 +10,6 @@ public interface IPackOptions
     string Version { get; set; }
     string HomePage { get; set; }
     string Architecture { get; set; }
+    string CompanyName { get; set; }
     void Validate();
 }

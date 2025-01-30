@@ -4,6 +4,7 @@ public class PackOptions : IPackOptions
 {
     public required string Name { get; set; }
     public required string SlugName { get; set; }
+    public required string CompanyName { get; set; }
     public required string BinaryDirectory { get; set; }
     public required string Email { get; set; }
     public required string Description { get; set; }
@@ -25,5 +26,7 @@ public class PackOptions : IPackOptions
             throw new ArgumentException(nameof(Email));
         if (string.IsNullOrEmpty(Architecture))
             throw new ArgumentException(nameof(Architecture));
+        if (string.IsNullOrEmpty(CompanyName))
+            throw new ArgumentException(nameof(CompanyName));
     }
 }

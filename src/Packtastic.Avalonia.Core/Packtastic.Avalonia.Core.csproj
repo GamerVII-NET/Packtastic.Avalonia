@@ -33,6 +33,21 @@
       <Compile Update="Core\Factories\DebPacker.cs">
         <DependentUpon>OperationSystemPackerFactory.cs</DependentUpon>
       </Compile>
+      <Compile Update="Core\Factories\MsiPacker.cs">
+        <DependentUpon>OperationSystemPackerFactory.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Core\Factories\ZipPacker.cs">
+        <DependentUpon>OperationSystemPackerFactory.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Templates\Wix\file-component.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Templates\Wix\template.wxs">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

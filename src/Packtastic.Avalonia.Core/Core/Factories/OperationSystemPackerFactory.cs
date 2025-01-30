@@ -15,6 +15,15 @@ public class OperationSystemPackerFactory
                 }
             },
             {
+                PackageType.Msi, new Dictionary<string, IOperationSystemPacker>
+                {
+                    { "win-x64", new MsiPacker("win-x64") },
+                    { "win-arm64", new MsiPacker("win-arm64") },
+                    { "win-x86", new MsiPacker("win-x86") },
+                    { "win-arm", new MsiPacker("win-arm") }
+                }
+            },
+            {
                 PackageType.Zip, new Dictionary<string, IOperationSystemPacker>
                 {
                     { "win-x64", new ZipPacker("win-x64") },
