@@ -10,7 +10,7 @@ for different operating systems.
 |--------------|-----------------------------------------------------------|----------------------------|-----------|
 | **dmg**      | Packaging applications into disk image formats.           | macOS                      | ✘         |
 | **deb**      | Format for creating Debian packages.                      | Linux (Debian-based)       | ✔         |
-| **msi**      | Application installation using Windows Installer.         | Windows                    | ✘         |
+| **msi**      | Application installation using Windows Installer.         | Windows (only)             | ✔         |
 | **exe**      | Executable files for application installation.            | Windows                    | ✔         |
 | **binary**   | Universal binary files.                                   | Linux, Windows, macOS      | ✔         |
 | **zip**      | Compressed archive for simplified application packaging.  | Windows, macOS, Linux      | ✔         |
