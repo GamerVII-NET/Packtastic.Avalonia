@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using NineDigit.WixSharpExtensions;
 using Packtastic.Avalonia.Core.Helpers;
 using WixSharp;
+using WixSharp.CommonTasks;
 using File = WixSharp.File;
 
 namespace Packtastic.Avalonia.Core.Factories;
@@ -47,6 +48,16 @@ public class MsiPacker(string platform) : IOperationSystemPacker
             Version = new Version(packOptionsExternal.Version),
         };
 
+        project.SetControlPanelInfo(
+            name: packOptionsExternal.DisplayName,
+            manufacturer: packOptionsExternal.CompanyName,
+            readme: null,
+            comment: null,
+            contact: null,
+            helpUrl: null,
+            aboutUrl: null,
+            productIconFilePath: null);
+
         if (!string.IsNullOrEmpty(packOptionsExternal.BackgroundImagePath) && System.IO.File.Exists(packOptionsExternal.BackgroundImagePath))
         {
             project.BackgroundImage = packOptionsExternal.BackgroundImagePath;
@@ -72,6 +83,8 @@ public class MsiPacker(string platform) : IOperationSystemPacker
                 new FileShortcut(packOptionsExternal.ShortCutFileName, "%Desktop%")
             ];
         }
+        
+        project.SetNetFxPrerequisite("NETFRAMEWORK20='#1'");
 
         Compiler.BuildMsi(project);
     }
