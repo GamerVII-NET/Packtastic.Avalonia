@@ -12,6 +12,8 @@ public class SolutionSln(string filePath) : ISolution
             .Where(p => p.ProjectType == SolutionProjectType.KnownToBeMSBuildFormat)
             .Select(p => new Project(p.ProjectName, p))
             .ToList();
+        
+        
 
         return await Task.FromResult<IReadOnlyCollection<IProject>>(projects);
     }

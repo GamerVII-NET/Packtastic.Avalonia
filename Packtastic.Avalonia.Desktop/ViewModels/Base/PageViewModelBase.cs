@@ -22,8 +22,10 @@ public class PageViewModelBase : ViewModelBase
                 tcs.SetException(exception);
             }
         }
-
-        new Thread(RunThreadTask).Start();
+        
+        var thread = new Thread(RunThreadTask);
+        thread.IsBackground = true;
+        thread.Start();
 
         return tcs.Task;
     }

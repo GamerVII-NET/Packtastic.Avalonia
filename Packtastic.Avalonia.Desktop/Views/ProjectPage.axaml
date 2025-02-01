@@ -38,29 +38,64 @@
 
         </Border>
         <Rectangle Grid.Column="1" Fill="#15000000"></Rectangle>
-        
-        <StackPanel Grid.Column="2">
-            <TextBlock Text="Choice project"
-                       FontWeight="Bold"
-                       FontSize="16" />
-            <Border IsVisible="{Binding ProjectsIsEmpty}" Margin="0, 20">
-                <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="Projects not found." VerticalAlignment="Center" />
-                </StackPanel>
-            </Border>
 
-            <ListBox ItemsSource="{Binding SolutionProjects}"
-                     SelectedItem="{Binding SelectedProject}"
-                     Margin="0, 10, 0, 0">
-                <ListBox.DataTemplates>
-                    <DataTemplate x:DataType="avalonia:ISolution">
-                        <StackPanel>
-                            <TextBlock Text="{Binding Name}" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.DataTemplates>
-            </ListBox>
-        </StackPanel>
+        <Border Grid.Column="2" Padding="15">
+            <StackPanel>
+                <TextBlock Text="Choice project"
+                           FontWeight="Bold"
+                           FontSize="16" />
+                <Border IsVisible="{Binding ProjectsIsEmpty}" Margin="0, 20">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="Projects not found." VerticalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+
+                <ListBox ItemsSource="{Binding SolutionProjects}"
+                         SelectedItem="{Binding SelectedProject}"
+                         Margin="0, 10, 0, 0">
+                    <ListBox.DataTemplates>
+                        <DataTemplate x:DataType="avalonia:IProject">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.DataTemplates>
+                </ListBox>
+            </StackPanel>
+        </Border>
+        
+        <Rectangle Grid.Column="3" Fill="#15000000"></Rectangle>
+        
+        <Border Grid.Column="4" Padding="15">
+            <StackPanel>
+                <TextBlock Text="Choice project"
+                           FontWeight="Bold"
+                           FontSize="16" />
+                <Border IsVisible="{Binding BuildProjectsIsEmpty}" Margin="0, 20">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="Build projects not found." VerticalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+
+                <ListBox ItemsSource="{Binding BuildProjects}"
+                         Margin="0, 10, 0, 0">
+                    <ListBox.DataTemplates>
+                        <DataTemplate x:DataType="avalonia:IProject">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.DataTemplates>
+                </ListBox>
+                <Button Command="{Binding CreateProjectCommand}"
+                        Content="Add build project"/>
+            </StackPanel>
+        </Border>
+
+        <ProgressBar Grid.Column="0"
+                     Grid.ColumnSpan="5"
+                     VerticalAlignment="Top"
+                     IsIndeterminate="{Binding IsProcessing}" />
     </Grid>
 
 </UserControl>
