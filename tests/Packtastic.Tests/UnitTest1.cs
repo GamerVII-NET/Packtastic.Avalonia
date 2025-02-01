@@ -200,7 +200,7 @@ public class Tests
 
         foreach (var platform in platforms)
         {
-            var packOptions = new PackOptions
+            var packOptions = new MsiPackOptions
             {
                 Name = project.Name,
                 SlugName = project.Name.ToSlug(),
@@ -210,6 +210,11 @@ public class Tests
                 Description = "Игровой проект Minecraft",
                 Version = "1.0.0.0",
                 HomePage = "https://github.com/Gml-Launcher/Gml.Launcher",
+                BackgroundImagePath = "background.png",
+                BannerImagePath = "banner.png",
+                LicenseRtfPath = "license.rtf",
+                ShortCutFileName = "Gml.Launcher.exe",
+                DisplayName = "Gml Лаунчер",
             };
             await project.PackPlatformsAsync(PackageType.Msi, platform, packOptions);
         }

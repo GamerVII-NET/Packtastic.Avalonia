@@ -1,6 +1,10 @@
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using NineDigit.WixSharpExtensions;
 using Packtastic.Avalonia.Core.Helpers;
+using WixSharp;
+using WixSharp.CommonTasks;
+using File = WixSharp.File;
 
 namespace Packtastic.Avalonia.Core.Factories;
 
@@ -8,68 +12,90 @@ public class MsiPacker(string platform) : IOperationSystemPacker
 {
     public void Pack(IPackOptions packOptions)
     {
-        if (OperatingSystem.IsWindows())
+        if (packOptions is not IExternalPackOptions packOptionsExternal)
+        {
+            throw new InvalidOperationException("External pack options are required.");
+        }
+        
+        if (!OperatingSystem.IsWindows())
         {
             throw new InvalidOperationException("Windows MSI packer is not implemented yet.");
         }
-        
+
         CheckWix();
 
-        var directory = Path.Combine(packOptions.BinaryDirectory, "bin", "Packtastic", platform);
+        var directory = Path.Combine(packOptionsExternal.BinaryDirectory, "bin", "Packtastic", platform);
 
         if (!Directory.Exists(directory))
         {
             throw new DirectoryNotFoundException($"The directory '{directory}' does not exist.");
         }
         
-        var template = "Templates/Wix/template.wxs";
-        var fileTemplate = "Templates/Wix/file-component.xml";
+        var files = Directory
+            .GetFiles(directory, "*.*", SearchOption.AllDirectories)
+            .Select(filePath => new FileInfo(filePath))
+            .Select(fileInfo =>
+                new File(new Id(GenerateComponentName(fileInfo)), fileInfo.FullName))
+            .ToArray();
 
-        if (!File.Exists(fileTemplate))
+        var project = new Project(packOptionsExternal.Name,
+            new Dir(
+                $@"%ProgramFiles%\{packOptionsExternal.CompanyName}\{packOptionsExternal.Name}",
+                files
+            ))
         {
-            throw new FileNotFoundException($"The file '{fileTemplate}' does not exist.");
+            GUID = new Guid("6f330b47-2577-43ad-9095-1861ba25889b"),
+            Version = new Version(packOptionsExternal.Version),
+        };
+
+        project.SetControlPanelInfo(
+            name: packOptionsExternal.DisplayName,
+            manufacturer: packOptionsExternal.CompanyName,
+            readme: null,
+            comment: null,
+            contact: null,
+            helpUrl: null,
+            aboutUrl: null,
+            productIconFilePath: null);
+
+        if (!string.IsNullOrEmpty(packOptionsExternal.BackgroundImagePath) && System.IO.File.Exists(packOptionsExternal.BackgroundImagePath))
+        {
+            project.BackgroundImage = packOptionsExternal.BackgroundImagePath;
+        }
+
+        if (!string.IsNullOrEmpty(packOptionsExternal.BannerImagePath) && System.IO.File.Exists(packOptionsExternal.BannerImagePath))
+        {
+            project.BannerImage = packOptionsExternal.BannerImagePath;
+        }
+
+        if (!string.IsNullOrEmpty(packOptionsExternal.LicenseRtfPath))
+        {
+            project.LicenceFile = packOptionsExternal.LicenseRtfPath;
+        }
+
+        if (!string.IsNullOrEmpty(packOptionsExternal.ShortCutFileName) &&
+            project.FindFile(f => f.Name.EndsWith(packOptionsExternal.ShortCutFileName))
+                .FirstOrDefault() is {} file)
+        {
+            file.Shortcuts =
+            [
+                new FileShortcut(packOptionsExternal.ShortCutFileName, "INSTALLDIR"),
+                new FileShortcut(packOptionsExternal.ShortCutFileName, "%Desktop%")
+            ];
         }
         
-        if (!File.Exists(template))
-        {
-            throw new FileNotFoundException($"The file '{template}' does not exist.");
-        }
-        
-        var fileTemplateContent = File.ReadAllText(fileTemplate);
-        
-        var filesContent = string.Empty;
+        project.SetNetFxPrerequisite("NETFRAMEWORK20='#1'");
 
-        foreach (var file in new DirectoryInfo(directory).GetFiles("*", SearchOption.AllDirectories))
-        {
-            filesContent += fileTemplateContent
-                .Replace(@"{{id}}", file.Name.ToSlug().Replace("-", string.Empty))
-                .Replace(@"{{name}}", file.Name)
-                .Replace(@"{{path}}", file.FullName);
-        }
-        
-        var content = File.ReadAllText(template)
-            .Replace( @"{{name}}", packOptions.Name)
-            .Replace("{{version}}", packOptions.Version)
-            .Replace("{{publisher}}", packOptions.CompanyName)
-            .Replace("{{files}}", filesContent)
-            .Replace("{{guid}}", Guid.NewGuid().ToString());
-        
-        var tempWix = Path.Combine(Path.GetTempPath(), $"{packOptions.SlugName}-{platform}.wxs");
-        File.WriteAllText(tempWix, content);
-        // System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("candle", tempWix) { UseShellExecute = true })!.WaitForExit();
-        Process.Start(new System.Diagnostics.ProcessStartInfo("wix", $"build {tempWix}") { UseShellExecute = true })!.WaitForExit();
+        Compiler.BuildMsi(project);
+    }
 
-        
-        
-        // System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("candle", tempWix) { UseShellExecute = true })!.WaitForExit();
-        // System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo("light", $"{packOptions.SlugName}-{platform}.wixobj") { UseShellExecute = true })!.WaitForExit();
-        
+    private string GenerateComponentName(FileInfo fileInfo)
+    {
+        return $"{fileInfo.Directory!.Name.Substring(0, 2)}.{fileInfo.Name}_{fileInfo.Length}".Replace("-", "_");
     }
 
     private void CheckWix()
     {
-        
-        
         // var directory = Environment.ExpandEnvironmentVariables(WixTools.WixSharpToolDir.Replace("%userprofile%", Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)));
         //
         // if (!Directory.Exists(directory))

@@ -32,4 +32,16 @@
       <ProjectReference Include="..\..\src\Packtastic.Avalonia.Core\Packtastic.Avalonia.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="background.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="banner.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="license.rtf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
