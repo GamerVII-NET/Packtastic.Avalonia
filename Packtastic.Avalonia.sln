@@ -16,6 +16,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{92A331
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{8173882A-0C45-4770-97A2-E99953EF3028}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Packtastic.Avalonia.Desktop", "Packtastic.Avalonia.Desktop\Packtastic.Avalonia.Desktop.csproj", "{8636D09F-6390-4A13-BE29-ADBB072FEA83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,10 +38,15 @@ Global
 		{E9A336D1-5C08-47ED-94F3-5ED0895E51C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9A336D1-5C08-47ED-94F3-5ED0895E51C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9A336D1-5C08-47ED-94F3-5ED0895E51C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8636D09F-6390-4A13-BE29-ADBB072FEA83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8636D09F-6390-4A13-BE29-ADBB072FEA83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8636D09F-6390-4A13-BE29-ADBB072FEA83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8636D09F-6390-4A13-BE29-ADBB072FEA83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{9A216EA5-C392-4F13-A3E1-FD175468E589} = {AD748F43-DAC9-42F2-97DE-195E97B90F89}
 		{6F2CA512-3D79-4E92-9976-158358A09F61} = {2A58797C-4F07-43C1-B1A0-D26A674D9DA4}
 		{E9A336D1-5C08-47ED-94F3-5ED0895E51C9} = {AD748F43-DAC9-42F2-97DE-195E97B90F89}
+		{8636D09F-6390-4A13-BE29-ADBB072FEA83} = {8173882A-0C45-4770-97A2-E99953EF3028}
 	EndGlobalSection
 EndGlobal
