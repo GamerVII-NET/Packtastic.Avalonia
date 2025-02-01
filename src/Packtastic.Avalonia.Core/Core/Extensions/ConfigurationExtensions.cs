@@ -28,15 +28,16 @@ public static class ConfigurationExtensions
             return new PackConfiguration();
         }
         
-        await using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-        var restoredConfig = await JsonSerializer.DeserializeAsync<PackConfiguration>(fileStream, new JsonSerializerOptions
+        var content = File.ReadAllText(filePath);
+        
+        var restoredConfig = JsonSerializer.Deserialize<PackConfiguration>(content, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
             Converters =
             {
                 new InterfaceConverter<IBuildProject, BuildProject>()
             }
-        }, token);
+        });
         
         if (restoredConfig == null)
         {
