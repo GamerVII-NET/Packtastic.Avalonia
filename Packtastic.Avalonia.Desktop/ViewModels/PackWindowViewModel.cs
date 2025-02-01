@@ -34,8 +34,6 @@ public class PackWindowViewModel : PageViewModelBase
                        ?? Locator.Current.GetService<PackManager>() 
                        ?? throw new Exception("No pack manager found");
         
-        
-
         RxApp.MainThreadScheduler.Schedule(LoadData);
         
         this.WhenAnyValue(vm => vm.SelectedSolution)

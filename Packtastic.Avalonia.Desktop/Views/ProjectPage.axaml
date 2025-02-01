@@ -21,17 +21,19 @@
                     </StackPanel>
                 </Border>
 
-                <ListBox ItemsSource="{Binding Solutions}"
-                         SelectedItem="{Binding SelectedSolution}"
-                         Margin="0, 10, 0, 0">
-                    <ListBox.DataTemplates>
-                        <DataTemplate x:DataType="avalonia:ISolution">
-                            <StackPanel>
-                                <TextBlock Text="{Binding Name}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.DataTemplates>
-                </ListBox>
+                <ScrollViewer>
+                    <ListBox ItemsSource="{Binding Solutions}"
+                             SelectedItem="{Binding SelectedSolution}"
+                             Margin="0, 10, 0, 0">
+                        <ListBox.DataTemplates>
+                            <DataTemplate x:DataType="avalonia:ISolution">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.DataTemplates>
+                    </ListBox>
+                </ScrollViewer>
             </StackPanel>
 
         </Border>

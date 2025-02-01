@@ -24,7 +24,7 @@ internal class ProjectsProcedures(IPackStorage storage) : IProjectProcedures
         var tasks = storage.Configuration.ProjectsDirectories
             .Select(async directory =>
             {
-                var solutionFiles = await Task.Run(() => Directory.EnumerateFiles(directory, "*.sln", SearchOption.AllDirectories));
+                var solutionFiles = await Task.Factory.StartNew(() => Directory.EnumerateFiles(directory, "*.sln", SearchOption.AllDirectories), TaskCreationOptions.LongRunning);
                 return solutionFiles.Select(file => new SolutionSln(file));
             });
 

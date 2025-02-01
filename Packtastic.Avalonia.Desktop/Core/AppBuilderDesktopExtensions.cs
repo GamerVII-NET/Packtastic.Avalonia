@@ -10,7 +10,14 @@ public static class AppBuilderDesktopExtensions
     public static AppBuilder RegisterDependencies(this AppBuilder builder)
     {
         Locator.CurrentMutable.Register(() => new PackJsonConfig(Environment.CurrentDirectory));
-        Locator.CurrentMutable.Register(() => new PackManager(Locator.Current.GetService<PackJsonConfig>()!));
+        Locator.CurrentMutable.Register(() =>
+        {
+            var manager = new PackManager(Locator.Current.GetService<PackJsonConfig>()!);
+
+            manager.Register();
+
+            return manager;
+        });
         
         
         return builder;
