@@ -34,12 +34,9 @@ public class PackWindowViewModel : PageViewModelBase
     [Reactive] public bool IsProcessing { get; set; }
     public ReactiveCommand<Unit, Unit> CreateProjectCommand { get; }
 
-    public PackWindowViewModel(PackManager? packManager = null)
+    public PackWindowViewModel(PackManager packManager)
     {
-        _packManager = packManager
-                       ?? Locator.Current.GetService<PackManager>()
-                       ?? throw new Exception("No pack manager found");
-
+        _packManager = packManager;
         CreateProjectCommand = ReactiveCommand.CreateFromTask(OnCreateProject);
 
         RxApp.MainThreadScheduler.Schedule(LoadData);
