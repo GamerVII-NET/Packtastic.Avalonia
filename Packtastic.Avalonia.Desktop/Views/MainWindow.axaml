@@ -14,8 +14,8 @@
     <TabItem Header="Projects">
         <views:ProjectPage DataContext="{Binding ProjectsViewModel}" />
     </TabItem>
-    <TabItem Header="efawefwaef">
-        waefwaefwaef
+    <TabItem Header="Processing">
+        <views:BuildPage DataContext="{Binding BuildPageViewModel}" />
     </TabItem>
 </TabControl>
 
