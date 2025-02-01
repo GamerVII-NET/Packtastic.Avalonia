@@ -8,7 +8,7 @@
              x:Class="Packtastic.Avalonia.Desktop.Views.BuildPage"
              x:DataType="vm:BuildPageViewModel"
              >
-    <Grid ColumnDefinitions="*, 1, *">
+    <Grid ColumnDefinitions="*, 1, *, 1, *">
         <Border Grid.Column="0" Padding="15">
             <StackPanel>
                 <TextBlock Text="Choice Build project"
@@ -37,8 +37,7 @@
             
 
         </Border>
-        <Rectangle Grid.Column="1" Fill="#15000000"></Rectangle>
-
+        <Rectangle Grid.Column="1" Fill="#15000000" />
         
         <Border Grid.Column="2" Padding="15">
             <WrapPanel ItemWidth="300">
@@ -79,9 +78,30 @@
             </WrapPanel>
             
         </Border>
+        
+        <Rectangle Grid.Column="3" Fill="#15000000" />
+        
+        <Border Grid.Column="4" Padding="15">
+            
+            <StackPanel Spacing="5">
+            
+                <ItemsControl>
+                
+                </ItemsControl>
+                <CheckBox Content="Msi" IsChecked="{Binding IsMsiBuildEnabled}"/>
+                <CheckBox Content="Deb" IsChecked="{Binding IsDebBuildEnabled}"/>
+                <Button Command="{Binding BuildCommand}" Content="Build"/>
+                <TextBlock>
+                    <Run Text="Has all builds?" />
+                    <Run Text="{Binding HasAllBuilds}" />
+                </TextBlock>
+            </StackPanel>
+            
+            
+        </Border>
 
         <ProgressBar Grid.Column="0"
-                     Grid.ColumnSpan="3"
+                     Grid.ColumnSpan="5"
                      VerticalAlignment="Top"
                      IsIndeterminate="{Binding IsProcessing}" />
     </Grid>

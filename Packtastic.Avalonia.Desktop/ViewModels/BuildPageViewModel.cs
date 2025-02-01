@@ -22,15 +22,22 @@ public class BuildPageViewModel : PageViewModelBase
     [Reactive] public ObservableCollectionExtended<IBuildProject> BuildProjects { get; set; } = [];
     [Reactive] public IBuildProject? SelectedBuildProject { get; set; }
     [Reactive] public bool BuildProjectsIsEmpty { get; set; }
+    [Reactive] public bool IsMsiBuildEnabled { get; set; }
+    [Reactive] public bool IsDebBuildEnabled { get; set; }
     [Reactive] public string DisplayName { get; set; }
     [Reactive] public string SlugName { get; set; }
+    [Reactive] public bool HasAllBuilds { get; set; }
     public ReactiveCommand<Unit, Unit> SaveCommand { get; }
+    public ReactiveCommand<Unit, Unit> BuildCommand { get; }
+    public ReactiveCommand<Unit, Unit> PublishCommand { get; }
 
     public BuildPageViewModel(PackManager packManager)
     {
         _packManager = packManager;
 
         SaveCommand = ReactiveCommand.CreateFromTask(OnSaveProject);
+        BuildCommand = ReactiveCommand.CreateFromTask(OnBuildProject);
+        PublishCommand = ReactiveCommand.CreateFromTask(OnPublishCommandProject);
 
         this.WhenAnyValue(vm => vm.DisplayName)
             .Subscribe(name => SlugName = name.ToSlug());
@@ -43,6 +50,43 @@ public class BuildPageViewModel : PageViewModelBase
             });
 
         RxApp.MainThreadScheduler.Schedule(LoadData);
+    }
+
+    private Task OnPublishCommandProject()
+    {
+        throw new NotImplementedException();
+    }
+
+    private Task OnBuildProject()
+    {
+        if (SelectedBuildProject == null)
+            return Task.CompletedTask;
+        
+        IsProcessing = true;
+        
+        return ExecuteFromNewThread(async () =>
+        {
+            try
+            {
+                var hasAllBuilds = await SelectedBuildProject.BuildAllPlatformsAsync();
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                   HasAllBuilds = hasAllBuilds;
+                });
+            }
+            catch (InvalidProjectFileException e)
+            {
+                Console.WriteLine(e);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            finally
+            {
+                await Dispatcher.UIThread.InvokeAsync(() => { IsProcessing = false; });
+            }
+        });
     }
 
     private async Task OnSaveProject()
