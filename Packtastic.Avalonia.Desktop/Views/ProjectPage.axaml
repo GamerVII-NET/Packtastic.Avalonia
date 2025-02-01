@@ -16,24 +16,49 @@
                            FontSize="16" />
                 <Border IsVisible="{Binding SolutionsIsEmpty}" Margin="0, 20">
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="Projects not found." VerticalAlignment="Center" />
+                        <TextBlock Text="Solutions not found." VerticalAlignment="Center" />
                         <HyperlinkButton Click="OpenDirectoryFolder" Content="Add directory" Margin="0, 10" />
                     </StackPanel>
                 </Border>
 
-                <ItemsControl ItemsSource="{Binding Solutions}">
-                    <ItemsControl.DataTemplates>
+                <ListBox ItemsSource="{Binding Solutions}"
+                         SelectedItem="{Binding SelectedSolution}"
+                         Margin="0, 10, 0, 0">
+                    <ListBox.DataTemplates>
                         <DataTemplate x:DataType="avalonia:ISolution">
                             <StackPanel>
                                 <TextBlock Text="{Binding Name}" />
                             </StackPanel>
                         </DataTemplate>
-                    </ItemsControl.DataTemplates>
-                </ItemsControl>
+                    </ListBox.DataTemplates>
+                </ListBox>
             </StackPanel>
 
         </Border>
         <Rectangle Grid.Column="1" Fill="#15000000"></Rectangle>
+        
+        <StackPanel Grid.Column="2">
+            <TextBlock Text="Choice project"
+                       FontWeight="Bold"
+                       FontSize="16" />
+            <Border IsVisible="{Binding ProjectsIsEmpty}" Margin="0, 20">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="Projects not found." VerticalAlignment="Center" />
+                </StackPanel>
+            </Border>
+
+            <ListBox ItemsSource="{Binding SolutionProjects}"
+                     SelectedItem="{Binding SelectedProject}"
+                     Margin="0, 10, 0, 0">
+                <ListBox.DataTemplates>
+                    <DataTemplate x:DataType="avalonia:ISolution">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.DataTemplates>
+            </ListBox>
+        </StackPanel>
     </Grid>
 
 </UserControl>
