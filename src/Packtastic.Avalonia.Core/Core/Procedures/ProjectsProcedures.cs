@@ -33,6 +33,16 @@ internal class ProjectsProcedures(IPackStorage storage) : IProjectProcedures
         return projects.SelectMany(project => project).ToArray();
     }
 
+    public Task UpdateBuildProjectAsync(IBuildProject selectedBuildProject)
+    {
+        if (storage.Configuration.BuildProjects.ContainsKey(selectedBuildProject.Name))
+        {
+            storage.Configuration.UpdateBuildProject(selectedBuildProject);
+        }
+
+        return storage.SaveConfigurationAsync();
+    }
+
     public async Task<IBuildProject> CreateBuildProjectAsync(IProject project, CancellationToken token = default)
     {
         var buildProject = new BuildProject(project);

@@ -8,4 +8,5 @@ public interface IConfiguration
     public ConcurrentDictionary<string, IBuildProject> BuildProjects { get; set; }
     void AddProjectsDirectory(string directory);
     void AddBuildProject(IBuildProject project);
+    void UpdateBuildProject(IBuildProject selectedBuildProject);
 }

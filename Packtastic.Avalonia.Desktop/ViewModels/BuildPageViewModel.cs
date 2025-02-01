@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Concurrency;
+using System.Threading.Tasks;
 using Avalonia.Threading;
 using DynamicData.Binding;
 using Microsoft.Build.Exceptions;
@@ -22,15 +24,35 @@ public class BuildPageViewModel : PageViewModelBase
     [Reactive] public bool BuildProjectsIsEmpty { get; set; }
     [Reactive] public string DisplayName { get; set; }
     [Reactive] public string SlugName { get; set; }
+    public ReactiveCommand<Unit, Unit> SaveCommand { get; }
 
     public BuildPageViewModel(PackManager packManager)
     {
         _packManager = packManager;
 
+        SaveCommand = ReactiveCommand.CreateFromTask(OnSaveProject);
+
         this.WhenAnyValue(vm => vm.DisplayName)
             .Subscribe(name => SlugName = name.ToSlug());
 
+        this.WhenAnyValue(vm => vm.SelectedBuildProject)
+            .WhereNotNull()
+            .Subscribe(name =>
+            {
+                DisplayName = name.DisplayName;
+            });
+
         RxApp.MainThreadScheduler.Schedule(LoadData);
+    }
+
+    private async Task OnSaveProject()
+    {
+        if (SelectedBuildProject == null)
+            return;
+
+        SelectedBuildProject.DisplayName = DisplayName;
+
+        await _packManager.Projects.UpdateBuildProjectAsync(SelectedBuildProject);
     }
 
     private void LoadData()

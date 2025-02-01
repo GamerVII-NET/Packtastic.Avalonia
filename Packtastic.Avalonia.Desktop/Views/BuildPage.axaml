@@ -74,7 +74,10 @@
                     <TextBlock Text="Project path"/>
                     <TextBox IsReadOnly="True" Text="{Binding SelectedBuildProject.AbsolutePath}"/>
                 </StackPanel>
+                <Button Command="{Binding SaveCommand}"
+                        Content="Save project info"/>
             </WrapPanel>
+            
         </Border>
 
         <ProgressBar Grid.Column="0"
