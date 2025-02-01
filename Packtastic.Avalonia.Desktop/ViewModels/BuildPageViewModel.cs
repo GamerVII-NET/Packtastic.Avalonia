@@ -5,6 +5,7 @@ using System.Reactive.Concurrency;
 using Avalonia.Threading;
 using DynamicData.Binding;
 using Microsoft.Build.Exceptions;
+using Packtastic.Avalonia.Core.Helpers;
 using Packtastic.Avalonia.Desktop.ViewModels.Base;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -19,13 +20,19 @@ public class BuildPageViewModel : PageViewModelBase
     [Reactive] public ObservableCollectionExtended<IBuildProject> BuildProjects { get; set; } = [];
     [Reactive] public IBuildProject? SelectedBuildProject { get; set; }
     [Reactive] public bool BuildProjectsIsEmpty { get; set; }
-    
+    [Reactive] public string DisplayName { get; set; }
+    [Reactive] public string SlugName { get; set; }
+
     public BuildPageViewModel(PackManager packManager)
     {
         _packManager = packManager;
+
+        this.WhenAnyValue(vm => vm.DisplayName)
+            .Subscribe(name => SlugName = name.ToSlug());
+
         RxApp.MainThreadScheduler.Schedule(LoadData);
     }
-    
+
     private void LoadData()
     {
         IsProcessing = true;
@@ -37,7 +44,8 @@ public class BuildPageViewModel : PageViewModelBase
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    BuildProjects = new ObservableCollectionExtended<IBuildProject>(_buildProjects.OrderBy(c => c.Name));
+                    BuildProjects =
+                        new ObservableCollectionExtended<IBuildProject>(_buildProjects.OrderBy(c => c.Name));
                     BuildProjectsIsEmpty = BuildProjects.Count == 0;
                 });
             }
@@ -51,10 +59,7 @@ public class BuildPageViewModel : PageViewModelBase
             }
             finally
             {
-                await Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    IsProcessing = false;
-                });
+                await Dispatcher.UIThread.InvokeAsync(() => { IsProcessing = false; });
             }
         });
     }

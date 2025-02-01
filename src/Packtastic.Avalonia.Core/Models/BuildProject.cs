@@ -9,6 +9,8 @@ public class BuildProject : IBuildProject
 {
     public IProject? Project { get; set; }
     public string Name { get; set; }
+    public string DisplayName { get; set; }
+    public string SlugName => DisplayName.ToSlug();
     public string Version { get; set; }
     public string HomePage { get; set; }
     public string Description { get; set; }

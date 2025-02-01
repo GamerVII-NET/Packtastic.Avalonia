@@ -3,6 +3,8 @@
 public interface IBuildProject : IProject
 {
     string Name { get; set; }
+    public string DisplayName { get; set; }
+    public string SlugName { get; }
     string Version { get; set; }
     string HomePage { get; set; }
     string Description { get; set; }
