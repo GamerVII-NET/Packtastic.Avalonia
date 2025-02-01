@@ -6,6 +6,18 @@
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
         <RootNamespace>Packtastic.Avalonia</RootNamespace>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>0.0.1-alpha1</Version>
+        <Title>Packtastic.Avalonia.Interfaces</Title>
+        <PackageProjectUrl>https://github.com/GamerVII-NET/Packtastic.Avalonia</PackageProjectUrl>
+        <PackageIcon>packtastik.png</PackageIcon>
     </PropertyGroup>
+
+    <ItemGroup>
+      <None Update="packtastik.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
 
 </Project>
