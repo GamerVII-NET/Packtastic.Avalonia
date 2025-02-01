@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using DynamicData.Binding;
 using Microsoft.Build.Exceptions;
 using Packtastic.Avalonia.Desktop.ViewModels.Base;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Splat;
 
 namespace Packtastic.Avalonia.Desktop.ViewModels;
 
@@ -31,7 +28,6 @@ public class PackWindowViewModel : PageViewModelBase
     [Reactive] public bool SolutionsIsEmpty { get; set; }
     [Reactive] public bool ProjectsIsEmpty { get; set; }
     [Reactive] public bool BuildProjectsIsEmpty { get; set; }
-    [Reactive] public bool IsProcessing { get; set; }
     public ReactiveCommand<Unit, Unit> CreateProjectCommand { get; }
 
     public PackWindowViewModel(PackManager packManager)
@@ -95,7 +91,7 @@ public class PackWindowViewModel : PageViewModelBase
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     SolutionProjects = new ObservableCollectionExtended<IProject>(_projects.OrderBy(c => c.Name));
-                    ProjectsIsEmpty = Solutions.Count == 0;
+                    ProjectsIsEmpty = SolutionProjects.Count == 0;
                 });
             }
             catch (InvalidProjectFileException e)
@@ -130,7 +126,7 @@ public class PackWindowViewModel : PageViewModelBase
                     await Dispatcher.UIThread.InvokeAsync(() =>
                     {
                         BuildProjects = new ObservableCollectionExtended<IBuildProject>(_buildProjects.Where(c => c .AbsolutePath == SelectedProject.AbsolutePath).OrderBy(c => c.Name));
-                        BuildProjectsIsEmpty = Solutions.Count == 0;
+                        BuildProjectsIsEmpty = BuildProjects.Count == 0;
                     });
                     
                 }
