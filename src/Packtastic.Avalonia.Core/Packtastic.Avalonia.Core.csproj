@@ -11,6 +11,8 @@
         <Title>Packtastic.Avalonia.Core</Title>
         <PackageProjectUrl>https://github.com/GamerVII-NET/Packtastic.Avalonia</PackageProjectUrl>
         <PackageIcon>packtastik.png</PackageIcon>
+        <DisableMSBuildAssemblyCopyCheck>true</DisableMSBuildAssemblyCopyCheck>
+
     </PropertyGroup>
 
     <ItemGroup>

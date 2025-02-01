@@ -27,7 +27,7 @@
         <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-      <PackageReference Include="Packtastic.Avalonia.Core" Version="0.0.1-alpha1" />
+    <ItemGroup>
+      <ProjectReference Include="..\src\Packtastic.Avalonia.Core\Packtastic.Avalonia.Core.csproj" />
     </ItemGroup>
 </Project>
