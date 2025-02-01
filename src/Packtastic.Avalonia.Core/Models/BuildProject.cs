@@ -15,6 +15,7 @@ public class BuildProject : IBuildProject
     public string HomePage { get; set; }
     public string Description { get; set; }
     public string Email { get; set; }
+    public string CompanyName { get; set; }
     public string AbsolutePath { get; set; }
     private OperationSystemBuilderFactory _builderFactory = new();
     private OperationSystemPackerFactory _packerFactory = new();
@@ -62,6 +63,21 @@ public class BuildProject : IBuildProject
 
         packer.Pack(packOptions);
 
+        return Task.CompletedTask;
+    }
+
+    public Task PackPlatformsAsync(PackageType packageType, IPackOptions packOptions)
+    {
+        if (!_packerFactory.OperationSystemPackers.TryGetValue(packageType, out var packers))
+            throw new NotSupportedException();
+        
+        packOptions.Validate();
+
+        foreach (var packer in packers)
+        {
+            packer.Value.Pack(packOptions);
+        }
+        
         return Task.CompletedTask;
     }
 }

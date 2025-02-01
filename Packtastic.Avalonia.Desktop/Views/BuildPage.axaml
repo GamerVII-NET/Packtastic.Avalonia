@@ -58,6 +58,10 @@
                     <TextBox Text="{Binding SelectedBuildProject.Description}"/>
                 </StackPanel>
                 <StackPanel Margin="10">
+                    <TextBlock Text="Company name"/>
+                    <TextBox Text="{Binding SelectedBuildProject.CompanyName}"/>
+                </StackPanel>
+                <StackPanel Margin="10">
                     <TextBlock Text="Version"/>
                     <TextBox Text="{Binding SelectedBuildProject.Version}" Watermark="1.0.0.0"/>
                 </StackPanel>
@@ -95,6 +99,7 @@
                     <Run Text="Has all builds?" />
                     <Run Text="{Binding HasAllBuilds}" />
                 </TextBlock>
+                <Button Command="{Binding PackCommand}" Content="Pack"/>
             </StackPanel>
             
             
